@@ -1,0 +1,41 @@
+{
+  "transport": "stdio",
+  "log_level": "info",
+  "host": "127.0.0.1",
+  "port": 8000,
+  "modules": [
+    {
+      "name": "mpl_mcp",
+      "enabled": true,
+      "config": {
+        "backend": "Agg",
+        "figure_dpi": 100
+      }
+    },
+    {
+      "name": "numpy_mcp",
+      "enabled": true,
+      "config": {
+        "precision": 8
+      }
+    },
+    {
+      "name": "sympy_mcp",
+      "enabled": true,
+      "config": {
+        "pretty_print": true
+      }
+    }
+  ],
+  "server": {
+    "timeout": 30,
+    "max_requests": 1000,
+    "debug": false
+  },
+  "cors": {
+    "enabled": true,
+    "allow_origins": ["*"],
+    "allow_methods": ["*"],
+    "allow_headers": ["*"]
+  }
+}

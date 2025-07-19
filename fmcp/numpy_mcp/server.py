@@ -1,5 +1,6 @@
 from fastmcp import FastMCP
-from fmcp.numpy_mcp.registration import register_functions
+from fmcp.numpy_mcp.core.numerical_operation import math_operation
+from fmcp.numpy_mcp.core.matlib import matlib_operation
 
 # Initialize the MCP server
 numpy_mcp = FastMCP(
@@ -10,5 +11,11 @@ numpy_mcp = FastMCP(
     """,
 )
 
-# Register all functions with the MCP server
-register_functions(numpy_mcp)
+numpy_mcp.tool(
+    math_operation,
+    description="Do numerical operation like add, sub, mul, div, power, abs, exp, log, sqrt, sin, cos, tan, mean, median, std, var, min, max, argmin, argmax, percentile, dot, matmul, inv, det, eig, solve, svd",
+)
+numpy_mcp.tool(
+    matlib_operation,
+    description="Do matrix operation like create, zeros, ones, full, arange, linspace, reshape, flatten, concatenate, transpose, stack",
+)
