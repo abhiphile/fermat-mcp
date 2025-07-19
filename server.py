@@ -26,6 +26,10 @@ async def setup():
     await app.import_server(sympy_mcp, prefix="sympy_mcp")
 
 
-if __name__ == "__main__":
+def main():
     asyncio.run(setup())
     app.run(transport="stdio")
+
+
+if __name__ == "__main__":
+    main()

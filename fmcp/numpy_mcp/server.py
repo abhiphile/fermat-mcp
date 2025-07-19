@@ -1,9 +1,8 @@
 from fastmcp import FastMCP
 
 numpy_mcp = FastMCP(
-    name="matplotlib",
+    name="numpy_mcp",
     instructions="""
-        This sever provides tools for plotting,
-        both numerical and symbolic data.
+        This sever provides tools for numerical computation.
     """,
 )

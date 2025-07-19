@@ -9,5 +9,6 @@ dependencies = [
     "matplotlib>=3.10.3",
     "numpy>=2.3.1",
     "pre-commit>=4.2.0",
+    "pytest>=8.4.1",
     "sympy>=1.14.0",
 ]
