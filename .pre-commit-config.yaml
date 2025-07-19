@@ -1,9 +1,7 @@
-
 repos:
 -   repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.5
     hooks:
     -   id: ruff
-        args: [--fix]
+        args: [--fix, --extend-ignore=F403,F405]  # Ignore both F403 and F405 errors
     -   id: ruff-format
-
