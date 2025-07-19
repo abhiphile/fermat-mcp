@@ -1,7 +1,7 @@
 [project]
 name = "fermat-mcp"
 version = "0.1.0"
-description = "MCP Server for mathematical compuation and plotting."
+description = "MCP Server for mathematical computation and plotting."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -10,5 +10,49 @@ dependencies = [
     "numpy>=2.3.1",
     "pre-commit>=4.2.0",
     "pytest>=8.4.1",
+    "ruff>=0.12.4",
     "sympy>=1.14.0",
 ]
+
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+# Enable pycodestyle (E) and Pyflakes (F) codes by default
+lint.select = ["E", "F"]
+lint.ignore = ["E501", "F403", "F405", "E902"]
+
+# Allow autofix for all enabled rules
+lint.fixable = ["ALL"]
+lint.unfixable = []
+
+# Exclude files and directories
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py312']  # Using the latest supported Python version
+include = '\.pyi?$'
