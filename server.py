@@ -10,11 +10,11 @@ app = FastMCP(
     This MCP server is for mathematical calculations (both numerical and symbolic)
     and plotting.
     ---
-    
+
     For Plotting use prefix : mpl_mcp
     For numerical Computation use prefix : numpy_mcp
-    For Symbolic Computation use prefix : sympy_mcp 
-    
+    For Symbolic Computation use prefix : sympy_mcp
+
     """,
 )
 
