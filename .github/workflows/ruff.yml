@@ -23,8 +23,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install ruff
 
-      - name: Run Ruff
+      - name: Run Ruff checks
         run: |
+          # Run Ruff linter with exclusions
           ruff check . --extend-exclude '
             ^(
               \.venv/
@@ -34,21 +35,14 @@ jobs:
               |\.mypy_cache/
               |__pycache__/
               |\.github/
-              |.*\.ya?ml$  # Exclude YAML files
+              |.*\.ya?ml$
             )
           '
-          ruff format --check . --extend-exclude '
-            ^(
-              \.venv/
-              |build/
-              |dist/
-              |\.git/
-              |\.mypy_cache/
-              |__pycache__/
-              |\.github/
-              |.*\.ya?ml$  # Exclude YAML files
-            )
-          '
+          # Run Ruff formatter with check mode
+          # Note: --exclude is not supported in ruff format, so we'll use find to filter files
+          find . -type f -name '*.py' | \
+            grep -vE '/(\.venv|build|dist|\.git|\.mypy_cache|__pycache__|\.github)/' | \
+            xargs ruff format --check
         env:
           # Only needed if your project has a pyproject.toml with custom config
           RUFF_FORMAT_INDENT_STYLE: space
