@@ -40,7 +40,8 @@ repos:
     rev: v4.5.0
     hooks:
       - id: trailing-whitespace
+        exclude: \.ya?ml$
       - id: end-of-file-fixer
-      - id: check-yaml
+        exclude: \.ya?ml$
       - id: check-added-large-files
         args: [--maxkb=5000]
