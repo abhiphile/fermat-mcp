@@ -29,7 +29,7 @@ def _convert_to_set(result) -> str:
     return str(result)
 
 
-def _parse_equations(equations: Union[str, List[str], Expr, List[Expr]]) -> List[Expr]:
+def _parse_equations(equations: Union[str, List[str]]) -> List[Expr]:
     """Parse equations from various input formats."""
     if isinstance(equations, (str, Expr)):
         equations = [equations]
@@ -48,9 +48,7 @@ def _parse_equations(equations: Union[str, List[str], Expr, List[Expr]]) -> List
     return parsed
 
 
-def _parse_symbols(
-    symbols: Union[str, List[str], Symbol, List[Symbol]]
-) -> List[Symbol]:
+def _parse_symbols(symbols: Union[str, List[str], None]) -> List[Symbol]:
     """Parse symbols from various input formats."""
     if symbols is None:
         return None
@@ -63,9 +61,19 @@ def _parse_symbols(
 
 def equation_operation(
     operation: EquationOperation,
-    equations: Union[str, List[str], Expr, List[Expr]],
-    symbols: Optional[Union[str, List[str], Symbol, List[Symbol]]] = None,
-    **kwargs,
+    equations: Union[str, List[str]],
+    symbols: Optional[Union[str, List[str]]] = None,
+    # Common parameters
+    domain: Optional[str] = None,
+    # Additional parameters for specific solvers
+    check: bool = True,
+    simplify: bool = True,
+    rational: Optional[bool] = None,
+    minimal: bool = False,
+    # Parameters for nonlinsolve
+    force: bool = False,
+    # Parameters for solveset
+    implicit: bool = False,
 ) -> str:
     """
     Unified interface for equation solving operations.
@@ -106,9 +114,24 @@ def equation_operation(
         # General purpose solver
         if not syms:
             # Try to extract symbols automatically if not provided
-            result = _solve(eqs, **kwargs)
+            result = _solve(
+                eqs,
+                check=check,
+                simplify=simplify,
+                rational=rational,
+                minimal=minimal,
+                domain=domain,
+            )
         else:
-            result = _solve(eqs, syms, **kwargs)
+            result = _solve(
+                eqs,
+                syms,
+                check=check,
+                simplify=simplify,
+                rational=rational,
+                minimal=minimal,
+                domain=domain,
+            )
 
     elif operation == "solveset":
         # Solver that returns solution sets
@@ -122,9 +145,25 @@ def equation_operation(
             result = []
             for eq in eqs:
                 for sym in syms:
-                    result.append(_solveset(eq, sym, **kwargs))
+                    result.append(
+                        _solveset(
+                            eq,
+                            sym,
+                            domain=domain,
+                            check=check,
+                            simplify=simplify,
+                            implicit=implicit,
+                        )
+                    )
         else:
-            result = _solveset(eqs[0], syms[0], **kwargs)
+            result = _solveset(
+                eqs[0],
+                syms[0],
+                domain=domain,
+                check=check,
+                simplify=simplify,
+                implicit=implicit,
+            )
 
     elif operation == "linsolve":
         # Linear system solver
@@ -138,7 +177,7 @@ def equation_operation(
         # Convert to augmented matrix form if equations are in list form
         if all(isinstance(eq, Expr) for eq in eqs):
             # Equations are already in expression form
-            result = _linsolve(eqs, *syms, **kwargs)
+            result = _linsolve(eqs, *syms)
         else:
             # Try to convert string equations to matrix form
             A = []
@@ -151,7 +190,7 @@ def equation_operation(
                         A.append(sympify(eq))
                 else:
                     A.append(eq)
-            result = _linsolve(A, syms, **kwargs)
+            result = _linsolve(A, syms)
 
     elif operation == "nonlinsolve":
         # Nonlinear system solver
@@ -160,7 +199,7 @@ def equation_operation(
         if not syms:
             raise ValueError("Symbols must be provided for nonlinsolve")
 
-        result = _nonlinsolve(eqs, syms, **kwargs)
+        result = _nonlinsolve(eqs, syms)
 
     else:
         valid_ops = get_args(EquationOperation)

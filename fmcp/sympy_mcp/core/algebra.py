@@ -15,7 +15,26 @@ def algebra_operation(
     operation: AlgebraOperation,
     expr: Union[str],
     syms: Optional[Union[str, List[str]]] = None,
-    **kwargs,
+    # Common parameters
+    rational: bool = False,
+    # Simplify parameters
+    ratio: float = 1.7,
+    measure=None,
+    # Expand parameters
+    deep: bool = True,
+    modulus: Optional[int] = None,
+    power_base: bool = True,
+    power_exp: bool = True,
+    mul: bool = True,
+    log: bool = True,
+    multinomial: bool = True,
+    basic: bool = True,
+    # Factor parameters
+    frac: bool = False,
+    sign: bool = False,
+    # Collect parameters
+    evaluate: bool = True,
+    exact: bool = False,
 ) -> str:
     """
     Unified interface for algebra operations.
@@ -52,15 +71,35 @@ def algebra_operation(
 
     # Dispatch to the appropriate operation
     if operation == "simplify":
-        return str(_simplify(expr_obj, **kwargs))
+        return str(_simplify(expr_obj, ratio=ratio, measure=measure, rational=rational))
     elif operation == "expand":
-        return str(_expand(expr_obj, **kwargs))
+        return str(
+            _expand(
+                expr_obj,
+                deep=deep,
+                modulus=modulus,
+                power_base=power_base,
+                power_exp=power_exp,
+                mul=mul,
+                log=log,
+                multinomial=multinomial,
+                basic=basic,
+                **({"fraction": True} if rational else {}),
+            )
+        )
     elif operation == "factor":
-        return str(_factor(expr_obj, **kwargs))
+        return str(
+            _factor(
+                expr_obj,
+                frac=frac,
+                sign=sign,
+                **({"rational": True} if rational else {}),
+            )
+        )
     elif operation == "collect":
         if syms_list is None:
             raise ValueError("Symbols must be provided for 'collect' operation")
-        return str(_collect(expr_obj, syms_list, **kwargs))
+        return str(_collect(expr_obj, syms_list, evaluate=evaluate, exact=exact))
     else:
         valid_ops = get_args(AlgebraOperation)
         raise ValueError(f"Invalid operation. Must be one of: {valid_ops}")

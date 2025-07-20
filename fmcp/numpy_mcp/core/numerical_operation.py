@@ -15,7 +15,6 @@ def math_operation(
     step: Optional[float] = 1.0,
     num: Optional[int] = None,
     fill_value: Optional[float] = None,
-    **kwargs,
 ) -> Union[list, float, int, dict]:
     """
     Unified interface for numerical operations using numpy.

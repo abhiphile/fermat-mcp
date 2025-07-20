@@ -1,4 +1,4 @@
-from typing import List, Union, Literal, get_args, Dict, Any, Tuple
+from typing import List, Union, Literal, get_args, Any, Tuple, Optional
 from sympy import Matrix, sympify, nsimplify
 
 # Define operation types for type hints
@@ -57,8 +57,15 @@ def _convert_to_json_serializable(obj):
 
 
 def matrix_operation(
-    operation: MatrixOperation, data: Union[str, List, Tuple], **kwargs
-) -> Union[Dict, List, str, float]:
+    operation: MatrixOperation,
+    data: Union[str, List, Tuple],
+    # Create parameters
+    rational: bool = True,
+    nrows: Optional[int] = None,
+    ncols: Optional[int] = None,
+    # Common parameters
+    simplify: bool = True,
+) -> Any:
     """
     Unified interface for matrix operations.
 
@@ -73,10 +80,9 @@ def matrix_operation(
             - String: "1 2; 3 4" or "[1, 2] [3, 4]"
             - List of lists: [[1, 2], [3, 4]]
             - Single list: [1, 2, 3, 4] (will be converted to a row matrix)
-        **kwargs: Additional arguments:
-            - For 'create':
-                - 'rational': If True, convert to rational numbers (default: True)
-                - 'nrows', 'ncols': For creating matrices of specific dimensions
+        rational: If True, convert to rational numbers (default: True)
+        nrows, ncols: For creating matrices of specific dimensions
+        simplify: If True, simplify the result (default: True)
 
     Returns:
         The result of the operation in a JSON-serializable format.
@@ -102,21 +108,31 @@ def matrix_operation(
     matrix_data = _parse_matrix_data(data)
 
     # Create matrix, optionally converting to rational numbers
-    rational = kwargs.get("rational", True)
     if rational:
         matrix = Matrix(matrix_data).applyfunc(lambda x: nsimplify(x, rational=True))
     else:
         matrix = Matrix(matrix_data)
 
-    # Perform the requested operation
+    # Handle matrix reshaping if nrows/ncols are provided
+    if nrows is not None and ncols is not None:
+        matrix = matrix.reshape(nrows, ncols)
+    elif nrows is not None:
+        matrix = matrix.reshape(nrows, -1)
+    elif ncols is not None:
+        matrix = matrix.reshape(-1, ncols)
+
+    # Handle different operations
     if operation == "create":
         return _convert_to_json_serializable(matrix.tolist())
 
-    elif operation == "det":
-        det = matrix.det()
-        # Try to convert to float if it's a simple number
+    # For other operations, ensure the matrix is square if needed
+    if operation in ["det", "inv", "eigenvals"] and matrix.rows != matrix.cols:
+        raise ValueError(f"Matrix must be square for {operation} operation")
+
+    if operation == "det":
         try:
-            return float(det.evalf())
+            det = matrix.det()
+            return float(det) if det.is_real else str(det)
         except (TypeError, AttributeError):
             return str(det)
 
