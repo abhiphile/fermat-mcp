@@ -1,4 +1,5 @@
 # Fermat MCP
+[![smithery badge](https://smithery.ai/badge/@abhiphile/fermat-mcp)](https://smithery.ai/server/@abhiphile/fermat-mcp)
 
 This project provides a FastMCP server for mathematical computations, including numerical and symbolic calculations, as well as plotting.
 
@@ -86,6 +87,14 @@ Add the following to your `mcp.json`:
 }
 ```
 
+### Installing via Smithery
+
+To install Fermat MCP for local usage automatically via [Smithery](https://smithery.ai/server/@abhiphile/fermat-mcp):
+
+```bash
+npx -y @smithery/cli install @abhiphile/fermat-mcp --client gemini
+```
+
 ### Example Usage
 - Using Gemini CLI
 ```
@@ -142,3 +151,4 @@ Add the following to your `mcp.json`:
 Here the task was to plot both x**2 and sin(x) in the same plot.
 ![GUI Demo 1-2](public/images/gui-demo-1.png)
 ![GUI Demo 2-2](public/images/gui-demo-2.png)
+
