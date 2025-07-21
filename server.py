@@ -4,6 +4,8 @@ from fmcp.numpy_mcp.server import numpy_mcp
 from fmcp.sympy_mcp.server import sympy_mcp
 import asyncio
 
+__all__ = ["app", "setup"]  # Explicitly expose app and setup
+
 app = FastMCP(
     name="fmcp",
     instructions="""

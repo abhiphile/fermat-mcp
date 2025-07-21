@@ -155,13 +155,18 @@ def matrix_operation(
     elif operation == "eigenvals":
         try:
             eigenvals = matrix.eigenvals()
-            # Convert to a serializable format
+            # Convert to a serializable format with better handling of complex numbers
             result = {}
             for val, mult in eigenvals.items():
-                key = str(val)
-                # Try to simplify complex expressions
-                if "I" in key and " " not in key:
-                    key = key.replace("*I", "j").replace("I", "j")
+                # Convert to complex and format nicely
+                cval = complex(val.evalf())
+                if abs(cval.imag) < 1e-10:  # Effectively real
+                    key = f"{cval.real:.6f}".rstrip("0").rstrip(".")
+                else:  # Complex number
+                    real_part = f"{cval.real:.6f}".rstrip("0").rstrip(".")
+                    imag_part = f"{abs(cval.imag):.6f}".rstrip("0").rstrip(".")
+                    sign = " + " if cval.imag >= 0 else " - "
+                    key = f"{real_part}{sign}{imag_part}j"
                 result[key] = int(mult)
             return result
         except Exception as e:

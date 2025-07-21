@@ -2,7 +2,7 @@ import numpy as np
 from typing import Optional, Union
 
 
-def math_operation(
+def numerical_operation(
     operation: str,
     a: Optional[Union[list, float, int]] = None,
     b: Optional[Union[list, float, int]] = None,
@@ -143,6 +143,9 @@ def math_operation(
     elif operation == "eig":
         vals, vecs = np.linalg.eig(a_array)
         return {"eigenvalues": vals.tolist(), "eigenvectors": vecs.tolist()}
+    elif operation == "eigenvals":
+        vals = np.linalg.eigvals(a_array)
+        return vals.tolist()
     elif operation == "solve":
         return np.linalg.solve(a_array, b_array).tolist()
     elif operation == "svd":
