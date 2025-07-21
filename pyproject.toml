@@ -19,41 +19,24 @@ dependencies = [
 requires = ["setuptools>=42"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+packages = ["fmcp"]  # Explicitly include only the main package
+
+# 🧼 Ruff (linter)
 [tool.ruff]
-# Enable pycodestyle (E) and Pyflakes (F) codes by default
 lint.select = ["E", "F"]
 lint.ignore = ["E501", "F403", "F405", "E902"]
-
-# Allow autofix for all enabled rules
 lint.fixable = ["ALL"]
 lint.unfixable = []
-
-# Exclude files and directories
 exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
+    ".bzr", ".direnv", ".eggs", ".git", ".git-rewrite", ".hg",
+    ".mypy_cache", ".nox", ".pants.d", ".pytype", ".ruff_cache", ".svn",
+    ".tox", ".venv", "__pypackages__", "_build", "buck-out", "build",
+    "dist", "node_modules", "venv"
 ]
 
+# 🧱 Black (formatter)
 [tool.black]
 line-length = 88
-target-version = ['py312']  # Using the latest supported Python version
+target-version = ['py312']
 include = '\.pyi?$'
