@@ -17,5 +17,5 @@ numpy_mcp.tool(
 )
 numpy_mcp.tool(
     matlib_operation,
-    description="Do matrix operation like create, zeros, ones, full, arange, linspace, reshape, flatten, concatenate, transpose, stack",
+    description="Do matrix operations: rand-mat, zeros, ones, eye, identity, arange, linspace, reshape, flatten, concatenate, transpose, stack",
 )
