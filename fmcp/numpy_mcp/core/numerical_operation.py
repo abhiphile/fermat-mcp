@@ -58,9 +58,20 @@ def numerical_operation(
             - 'inv': Matrix inverse (a: list)
             - 'det': Matrix determinant (a: list)
             - 'eig': Eigenvalues/vectors (a: list)
+            - 'eigenvals': Eigenvalues only (a: list)
             - 'solve': Solve linear system (a: list, b: list)
             - 'svd': Singular Value Decomposition (a: list)
-        **kwargs: Additional arguments specific to each operation
+        a: First input array or value
+        b: Second input array or value (for binary operations)
+        shape: Shape of the output array (for creation operations)
+        new_shape: New shape for reshape operation
+        axis: Axis along which to perform operations (default: 0)
+        q: Percentile value (0-100) for percentile operation
+        start: Start value for arange/linspace
+        stop: Stop value for arange/linspace
+        step: Step size for arange (default: 1.0)
+        num: Number of samples for linspace
+        fill_value: Fill value for 'full' operation
 
     Returns:
         Result of the operation, type depends on operation

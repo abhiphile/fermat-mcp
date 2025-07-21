@@ -15,6 +15,7 @@ def matlib_operation(
 
     Args:
         operation: The matrix operation to perform. One of:
+            - 'rand-mat': Matrix of random values (0-1) (data: None, shape: list)
             - 'matrix': Create a matrix from data (data: list[list], shape: list)
             - 'asmatrix': Interpret input as a matrix (data: list[list], shape: list)
             - 'bmat': Build a matrix from nested blocks (data: list[list[list]], shape: list)
@@ -24,8 +25,6 @@ def matlib_operation(
             - 'eye': 2D array with ones on diagonal (data: None, shape: list, m: int, n: int, k: int)
             - 'identity': Identity matrix (data: None, shape: list, m: int, n: int)
             - 'repmat': Repeat array MxN times (data: list[list], shape: list, m: int, n: int)
-            - 'rand': Matrix of random values (0-1) (data: None, shape: list)
-            - 'randn': Matrix of random values from standard normal distribution (data: None, shape: list)
 
         data: Input data for matrix operations
         shape: Shape of the output matrix
@@ -66,11 +65,8 @@ def matlib_operation(
         a = np.asarray(data)
         return np.tile(a, (m, n)).tolist()
 
-    elif operation == "rand":
-        return np.random.random(shape).tolist()
-
-    elif operation == "randn":
-        return np.random.standard_normal(shape).tolist()
+    elif operation == "rand-mat":
+        return np.random.rand(n, m).tolist()
 
     else:
         raise ValueError(f"Unknown operation: {operation}")
