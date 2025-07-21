@@ -1,4 +1,4 @@
-from typing import List, Optional, Union, Tuple, Literal, Sequence
+from typing import List, Optional, Union
 import matplotlib.pyplot as plt
 import numpy as np
 import io
@@ -6,9 +6,9 @@ from fastmcp.utilities.types import Image
 
 
 def plot_stack(
-    x_data: Union[Sequence[float], Sequence[Sequence[float]]],
-    y_data: Union[Sequence[Sequence[float]], Sequence[float]],
-    chart_type: Literal["area", "bar"] = "area",
+    x_data: Union[List[float], List[List[float]]],
+    y_data: Union[List[List[float]], List[float]],
+    chart_type: str = "area",  # "area" or "bar"
     labels: Optional[List[str]] = None,
     title: str = "",
     xlabel: str = "",
@@ -16,7 +16,7 @@ def plot_stack(
     colors: Optional[Union[str, List[str]]] = None,
     alpha: float = 0.7,
     dpi: int = 200,
-    figsize: Optional[Tuple[int, int]] = None,
+    figsize: Optional[List[int]] = None,
     grid: bool = True,
     legend: bool = True,
 ) -> Image:

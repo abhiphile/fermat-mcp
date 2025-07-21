@@ -1,4 +1,4 @@
-from typing import List, Optional, Union, Tuple, Sequence
+from typing import List, Optional, Union
 import matplotlib.pyplot as plt
 import io
 import numpy as np
@@ -6,21 +6,21 @@ from fastmcp.utilities.types import Image
 
 
 def plot_scatter(
-    x_data: Union[Sequence[float], Sequence[Sequence[float]]],
-    y_data: Union[Sequence[float], Sequence[Sequence[float]]],
+    x_data: List[float],
+    y_data: List[float],
     labels: Optional[Union[str, List[str]]] = None,
     title: str = "",
     xlabel: str = "",
     ylabel: str = "",
     color: Union[str, List[str]] = "blue",
-    size: Union[int, float, List[Union[int, float]]] = 36,
+    size: Union[int, float, List[float]] = 36,
     alpha: float = 0.7,
     marker: str = "o",
     edgecolors: Optional[str] = "face",
     linewidths: float = 1.0,
     save: bool = False,
     dpi: int = 200,
-    figsize: Optional[Tuple[int, int]] = None,
+    figsize: Optional[List[int]] = None,
     grid: bool = True,
     legend: bool = False,
 ) -> Image:
@@ -53,13 +53,15 @@ def plot_scatter(
     x = np.asarray(x_data, dtype=float)
     y = np.asarray(y_data, dtype=float)
 
-    # Handle 1D y_data case by adding an extra dimension
+    # Ensure y is at least 2D
     if y.ndim == 1:
         y = y.reshape(-1, 1)
 
-    # Ensure x matches the number of data points in y
-    if x.ndim == 1 and len(x) != y.shape[0]:
-        x = np.tile(x, (y.shape[1], 1)).T
+    # Ensure x is 1D and matches the number of data points in y
+    x = np.asarray(x_data, dtype=float).flatten()
+    if len(x) != y.shape[0]:
+        x = np.tile(x, (y.shape[1], 1)).T.flatten()
+        y = y.T.reshape(-1, y.shape[0]).T
 
     # Handle labels
     if labels is None:
@@ -68,7 +70,7 @@ def plot_scatter(
         labels = [labels]
 
     # Handle colors
-    if isinstance(color, (str, tuple)):
+    if isinstance(color, str):
         color = [color] * y.shape[1]
 
     # Handle sizes
@@ -76,7 +78,7 @@ def plot_scatter(
         size = [size] * y.shape[1]
 
     # Create figure with specified size
-    fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
+    fig, ax = plt.subplots(figsize=(figsize[0], figsize[1]), dpi=dpi)
 
     # Create the scatter plot for each series
     for i in range(y.shape[1]):

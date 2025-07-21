@@ -22,7 +22,7 @@ def eqn_chart(
     ylabel: str = "y",
     grid: bool = True,
     legend: bool = True,
-    figsize: tuple = (10, 6),
+    figsize: List[int] = [10, 6],
     linewidth: float = 2.0,
     linestyle: str = "-",
     alpha: float = 1.0,
@@ -59,7 +59,7 @@ def eqn_chart(
     if isinstance(equations, str):
         equations = [equations]
 
-    fig, ax = plt.subplots(figsize=figsize)
+    fig, ax = plt.subplots(figsize=(figsize[0], figsize[1]), dpi=dpi)
     x = np.linspace(x_min, x_max, num_points)
 
     for eq in equations:

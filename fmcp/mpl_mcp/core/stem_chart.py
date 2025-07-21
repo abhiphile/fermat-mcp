@@ -1,4 +1,4 @@
-from typing import List, Optional, Union, Tuple, Literal, Sequence
+from typing import List, Optional, Union
 import matplotlib.pyplot as plt
 import numpy as np
 import io
@@ -6,8 +6,8 @@ from fastmcp.utilities.types import Image
 
 
 def plot_stem(
-    x_data: Union[Sequence[float], Sequence[Sequence[float]]],
-    y_data: Union[Sequence[float], Sequence[Sequence[float]]],
+    x_data: Union[List[float], List[List[float]]],
+    y_data: Union[List[float], List[List[float]]],
     labels: Optional[Union[str, List[str]]] = None,
     title: str = "",
     xlabel: str = "",
@@ -17,9 +17,9 @@ def plot_stem(
     markerfmt: str = "o",
     basefmt: str = "k-",
     bottom: float = 0.0,
-    orientation: Literal["vertical", "horizontal"] = "vertical",
+    orientation: str = "vertical",  # "vertical" or "horizontal"
     dpi: int = 200,
-    figsize: Optional[Tuple[int, int]] = None,
+    figsize: Optional[List[int]] = None,
     grid: bool = True,
     legend: bool = False,
 ) -> Image:
@@ -40,7 +40,7 @@ def plot_stem(
         bottom: Position of the baseline (default: 0.0)
         orientation: "vertical" or "horizontal" (default: "vertical")
         dpi: Output image resolution (dots per inch, default: 200)
-        figsize: Figure size as (width, height) in inches
+        figsize: Figure size as (width, height) in inches.
         grid: Whether to show grid lines (default: True)
         legend: Whether to show legend (default: False)
 
@@ -70,7 +70,7 @@ def plot_stem(
         colors = [colors] * y.shape[0]
 
     # Create figure with specified size using OO interface
-    fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
+    fig, ax = plt.subplots(figsize=(figsize[0], figsize[1]), dpi=dpi)
 
     # Create the stem plot for each series
     for i in range(y.shape[0]):

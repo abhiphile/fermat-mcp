@@ -1,4 +1,4 @@
-from typing import List, Optional, Literal, Union, Tuple, Sequence
+from typing import List, Optional, Union
 import matplotlib.pyplot as plt
 import io
 import numpy as np
@@ -6,9 +6,9 @@ from fastmcp.utilities.types import Image
 
 
 def plot_chart(
-    x_data: Union[Sequence[float], Sequence[Sequence[float]]],
-    y_data: Union[Sequence[float], Sequence[Sequence[float]]],
-    plot_type: Literal["line", "scatter", "bar"] = "line",
+    x_data: List[float],
+    y_data: Union[List[float], List[List[float]]],
+    plot_type: str = "line",  # "line", "scatter", or "bar"
     labels: Optional[Union[str, List[str]]] = None,
     title: str = "",
     xlabel: str = "",
@@ -16,7 +16,7 @@ def plot_chart(
     color: Union[str, List[str]] = "skyblue",
     save: bool = False,
     dpi: int = 200,
-    figsize: Optional[Tuple[int, int]] = None,
+    figsize: Optional[List[int]] = None,
     grid: bool = True,
     legend: bool = False,
 ) -> Image:
@@ -34,7 +34,7 @@ def plot_chart(
         color: Color or list of colors for the plot elements
         save: If True, save the figure to a buffer
         dpi: Output image resolution (dots per inch, default: 200)
-        figsize: Figure size as (width, height) in inches
+        figsize: List of width and height in inches
         grid: Whether to show grid lines
         legend: Whether to show legend
 
@@ -65,7 +65,7 @@ def plot_chart(
         color = [color] * y.shape[1]
 
     # Create figure with specified size using OO interface
-    fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
+    fig, ax = plt.subplots(figsize=(figsize[0], figsize[1]), dpi=dpi)
 
     # Create the appropriate plot type
     for i in range(y.shape[1]):
