@@ -47,8 +47,7 @@ def plot_barchart(
     plt.tight_layout()
 
     buf = io.BytesIO()
-    if save:
-        plt.savefig(buf, format="png", dpi=dpi)
+    plt.savefig(buf, format="png", dpi=dpi)
     plt.close()
     buf.seek(0)
     return Image(data=buf.read(), format="png")

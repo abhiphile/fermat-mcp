@@ -26,5 +26,6 @@ async def test_server_initialization():
         assert any(
             name.startswith("numpy_mcp_") for name in tool_names
         ), f"Expected at least one numpy_mcp_* tool, but got: {tool_names}"
-        # assert any(name.startswith("sympy_mcp_") for name in tool_names), \
-        #     f"Expected at least one sympy_mcp_* tool, but got: {tool_names}"
+        assert any(
+            name.startswith("sympy_mcp_") for name in tool_names
+        ), f"Expected at least one sympy_mcp_* tool, but got: {tool_names}"
