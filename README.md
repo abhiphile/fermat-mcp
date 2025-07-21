@@ -62,7 +62,7 @@ Add the following to your `mcp.json`:
   "mcpServers": {
     "fmcp": {
       "command": "bash",
-      "args": ["/path/to/fermat-mcp/setup.sh"],
+      "args": ["MCP_SERVER_ABSOLUTE_PATH/setup.sh"],
       "description": "fmcp server is for mathematical computations, including numerical and symbolic calculations, as well as plotting."
     }
   }
@@ -79,7 +79,7 @@ Add the following to your `mcp.json`:
   "mcpServers": {
     "fmcp": {
       "command": "bash",
-      "args": ["/path/to/fermat-mcp/setup.sh"],
+      "args": ["MCP_SERVER_ABSOLUTE_PATH/setup.sh"],
       "description": "fmcp server is for mathematical computations, including numerical and symbolic calculations, as well as plotting."
     }
   }
