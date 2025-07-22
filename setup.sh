@@ -25,7 +25,7 @@ if [ ! -f "pyproject.toml" ]; then
     exit 1
 fi
 
-uv pip install -e .
+uv sync
 
 # Start the MCP server
 echo "Starting MCP server..."
