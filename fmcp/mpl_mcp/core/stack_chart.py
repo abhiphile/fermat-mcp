@@ -6,8 +6,8 @@ from fastmcp.utilities.types import Image
 
 
 def plot_stack(
-    x_data: Union[List[float], List[List[float]]],
-    y_data: Union[List[List[float]], List[float]],
+    x_data: Union[List[Union[float, int]], List[List[Union[float, int]]]],
+    y_data: Union[List[List[Union[float, int]]], List[Union[float, int]]],
     chart_type: str = "area",  # "area" or "bar"
     labels: Optional[List[str]] = None,
     title: str = "",
@@ -16,7 +16,7 @@ def plot_stack(
     colors: Optional[Union[str, List[str]]] = None,
     alpha: float = 0.7,
     dpi: int = 200,
-    figsize: Optional[List[int]] = None,
+    figsize: Optional[List[Union[int, float]]] = None,
     grid: bool = True,
     legend: bool = True,
 ) -> Image:
@@ -51,9 +51,11 @@ def plot_stack(
 
     # Handle labels
     if labels is None:
-        labels = [f"Series {i+1}" for i in range(y.shape[0])]
+        labels_list = [f"Series {i+1}" for i in range(y.shape[0])]
     elif isinstance(labels, str):
-        labels = [labels]
+        labels_list = [labels]
+    else:
+        labels_list = list(labels)
 
     # Handle colors
     if colors is None:
@@ -61,10 +63,38 @@ def plot_stack(
         default_colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
         colors = [default_colors[i % len(default_colors)] for i in range(y.shape[0])]
     elif isinstance(colors, str):
-        colors = [colors] * y.shape[0]
+        colors = [str(colors)] * y.shape[0]
+    elif isinstance(colors, list):
+        # If the list is empty or contains None, use default colors
+        if not colors or all(c is None for c in colors):
+            default_colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+            colors = [default_colors[i % len(default_colors)] for i in range(y.shape[0])]
+        else:
+            # Filter out None values and ensure all elements are strings
+            default_colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+            colors = [str(c) if c is not None else default_colors[i % len(default_colors)] for i, c in enumerate(colors)]
+            # If colors list is shorter than y.shape[0], repeat colors
+            if len(colors) < y.shape[0]:
+                colors += [default_colors[i % len(default_colors)] for i in range(len(colors), y.shape[0])]
+    else:
+        colors = [str(colors)] * y.shape[0]
+
+    # Ensure colors is always a list for safe usage of len(colors)
+    if not isinstance(colors, list):
+        colors = [str(colors)] * y.shape[0]
+    # If colors is still None (edge case), set to default colors
+    if colors is None:
+        default_colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+        colors = [default_colors[i % len(default_colors)] for i in range(y.shape[0])]
 
     # Create figure with specified size using OO interface
-    fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
+    # Normalize figsize
+    if figsize and len(figsize) >= 2:
+        figsize_vals = (float(figsize[0]), float(figsize[1]))
+    else:
+        figsize_vals = (8.0, 6.0)
+
+    fig, ax = plt.subplots(figsize=figsize_vals, dpi=dpi)
 
     # Calculate the cumulative sum for stacking
     y_stack = np.cumsum(y, axis=0)
@@ -83,7 +113,7 @@ def plot_stack(
                 x,
                 y_bottom,
                 y_stack[i],
-                label=labels[i] if i < len(labels) else f"Series {i+1}",
+                label=labels_list[i] if i < len(labels_list) else f"Series {i+1}",
                 color=colors[i % len(colors)],
                 alpha=alpha,
                 edgecolor="none",
@@ -93,7 +123,7 @@ def plot_stack(
                 x,
                 y_plot,
                 bottom=y_bottom,
-                label=labels[i] if i < len(labels) else f"Series {i+1}",
+                label=labels_list[i] if i < len(labels_list) else f"Series {i+1}",
                 color=colors[i % len(colors)],
                 alpha=alpha,
                 edgecolor="none",

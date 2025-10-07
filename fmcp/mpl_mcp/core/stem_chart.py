@@ -6,8 +6,8 @@ from fastmcp.utilities.types import Image
 
 
 def plot_stem(
-    x_data: Union[List[float], List[List[float]]],
-    y_data: Union[List[float], List[List[float]]],
+    x_data: Union[List[Union[float, int]], List[List[Union[float, int]]]],
+    y_data: Union[List[Union[float, int]], List[List[Union[float, int]]]],
     labels: Optional[Union[str, List[str]]] = None,
     title: str = "",
     xlabel: str = "",
@@ -19,7 +19,7 @@ def plot_stem(
     bottom: float = 0.0,
     orientation: str = "vertical",  # "vertical" or "horizontal"
     dpi: int = 200,
-    figsize: Optional[List[int]] = None,
+    figsize: Optional[List[Union[int, float]]] = None,
     grid: bool = True,
     legend: bool = False,
 ) -> Image:
@@ -59,23 +59,34 @@ def plot_stem(
     if x.ndim == 1 and len(x) != y.shape[1]:
         x = np.tile(x, (y.shape[0], 1))
 
-    # Handle labels
+    # Handle labels — normalize to a list
     if labels is None:
-        labels = [""] * y.shape[0]
+        labels_list: List[str] = [""] * y.shape[0]
     elif isinstance(labels, str):
-        labels = [labels]
+        labels_list = [labels]
+    else:
+        labels_list = list(labels)
 
-    # Handle colors
+    # Handle colors — normalize to a list
     if isinstance(colors, str):
-        colors = [colors] * y.shape[0]
+        colors_list = [colors] * y.shape[0]
+    else:
+        colors_list = list(colors)
 
     # Create figure with specified size using OO interface
-    fig, ax = plt.subplots(figsize=(figsize[0], figsize[1]), dpi=dpi)
+    # Normalize figsize
+    if figsize and len(figsize) >= 2:
+        figsize_vals = (float(figsize[0]), float(figsize[1]))
+    else:
+        figsize_vals = (6.0, 4.0)
+
+    fig, ax = plt.subplots(figsize=figsize_vals, dpi=dpi)
 
     # Create the stem plot for each series
+    # Create the stem plot for each series
     for i in range(y.shape[0]):
-        current_label = labels[i] if i < len(labels) else f"Series {i+1}"
-        current_color = colors[i % len(colors)]
+        current_label = labels_list[i] if i < len(labels_list) else f"Series {i+1}"
+        current_color = colors_list[i % len(colors_list)]
 
         # Create the stem plot
         if orientation == "vertical":
@@ -113,7 +124,7 @@ def plot_stem(
     if grid:
         ax.grid(True, linestyle="--", alpha=0.7)
 
-    if legend and any(labels):
+    if legend and any(labels_list):
         ax.legend()
 
     # Save the plot to a buffer and close the figure
