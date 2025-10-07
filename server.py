@@ -1,3 +1,4 @@
+import os
 from fastmcp import FastMCP
 from fmcp.mpl_mcp.server import mpl_mcp
 from fmcp.numpy_mcp.server import numpy_mcp
@@ -30,7 +31,11 @@ async def setup():
 
 def main():
     asyncio.run(setup())
-    app.run(transport="stdio")
+    # If running inside a smithery deployment, prefer HTTP transport
+    if os.environ.get("SMITHERY_DEPLOYMENT"):
+        app.run(transport="http")
+    else:
+        app.run(transport="stdio")
 
 
 if __name__ == "__main__":
