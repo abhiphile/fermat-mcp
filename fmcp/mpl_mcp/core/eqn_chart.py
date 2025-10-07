@@ -14,19 +14,19 @@ class PlotConfig(BaseModel):
 
 def eqn_chart(
     equations: Union[str, List[str]],
-    x_min: Union[float, int] = -10.0,
-    x_max: Union[float, int] = 10.0,
-    num_points: Union[int, float] = 1000,
+    x_min: float = -10.0,
+    x_max: float = 10.0,
+    num_points: int = 1000,
     title: str = "Equation Plot",
     xlabel: str = "x",
     ylabel: str = "y",
     grid: bool = True,
     legend: bool = True,
-    figsize: List[Union[int, float]] = [10, 6],
-    linewidth: Union[float, int] = 2.0,
+    figsize: List[int] = [10, 6],
+    linewidth: float = 2.0,
     linestyle: str = "-",
-    alpha: Union[float, int] = 1.0,
-    dpi: Union[int, float] = 200,
+    alpha: float = 1.0,
+    dpi: int = 200,
     save: bool = False,
 ) -> Image:
     """
@@ -59,8 +59,8 @@ def eqn_chart(
     if isinstance(equations, str):
         equations = [equations]
 
-    fig, ax = plt.subplots(figsize=(float(figsize[0]), float(figsize[1])), dpi=int(dpi))
-    x = np.linspace(float(x_min), float(x_max), int(num_points))
+    fig, ax = plt.subplots(figsize=(figsize[0], figsize[1]), dpi=dpi)
+    x = np.linspace(x_min, x_max, num_points)
 
     for eq in equations:
         eq_py = eq.replace("^", "**")
@@ -91,9 +91,9 @@ def eqn_chart(
                 x,
                 y,
                 label=f"y = {eq}",
-                linewidth=float(linewidth),
+                linewidth=linewidth,
                 linestyle=linestyle,
-                alpha=float(alpha),
+                alpha=alpha,
             )
 
         except Exception as e:
@@ -112,7 +112,7 @@ def eqn_chart(
 
     # Always save to buffer for the return value
     buf = io.BytesIO()
-    plt.savefig(buf, format="png", dpi=int(dpi))
+    plt.savefig(buf, format="png", dpi=dpi)
     plt.close()
     buf.seek(0)
 
