@@ -5,7 +5,6 @@
 
 This project provides a FastMCP server for mathematical computations, including numerical and symbolic calculations, as well as plotting.
 
-[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/abhiphile-fermat-mcp-badge.png)](https://mseep.ai/app/abhiphile-fermat-mcp)
 
 
 ## Modules
