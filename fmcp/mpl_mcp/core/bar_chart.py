@@ -2,11 +2,10 @@ from typing import List, Optional, Literal
 import matplotlib.pyplot as plt
 import io
 from fastmcp.utilities.types import Image
-from typing import Union
 
 
 def plot_barchart(
-    values: List[Union[float, int]],
+    values: List[float],
     labels: Optional[List[str]] = None,
     title: str = "",
     xlabel: str = "",
@@ -20,7 +19,7 @@ def plot_barchart(
     Plot a bar chart (vertical or horizontal) with optional labels (defaults to empty strings).
 
     Args:
-        values: List of bar heights (values: float or int)
+        values: List of bar heights (values)
         labels: List of bar labels (categories) or None for empty labels
         title: Plot title
         xlabel: Label for the x-axis

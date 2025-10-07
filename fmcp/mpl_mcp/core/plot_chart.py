@@ -6,8 +6,8 @@ from fastmcp.utilities.types import Image
 
 
 def plot_chart(
-    x_data: List[Union[float, int]],
-    y_data: Union[List[Union[float, int]], List[List[Union[float, int]]]],
+    x_data: List[float],
+    y_data: Union[List[float], List[List[float]]],
     plot_type: str = "line",  # "line", "scatter", or "bar"
     labels: Optional[Union[str, List[str]]] = None,
     title: str = "",
@@ -16,7 +16,7 @@ def plot_chart(
     color: Union[str, List[str]] = "skyblue",
     save: bool = False,
     dpi: int = 200,
-    figsize: Optional[List[Union[int, float]]] = None,
+    figsize: Optional[List[int]] = None,
     grid: bool = True,
     legend: bool = False,
 ) -> Image:
@@ -54,30 +54,22 @@ def plot_chart(
     if x.ndim == 1 and len(x) != y.shape[0]:
         x = np.tile(x, (y.shape[1], 1)).T
 
-    # Handle labels — normalize to a list of strings
+    # Handle labels
     if labels is None:
-        labels_list: List[str] = [""] * y.shape[1]
+        labels = [""] * y.shape[1]
     elif isinstance(labels, str):
-        labels_list = [labels]
-    else:
-        labels_list = list(labels)
+        labels = [labels]
 
     # Handle colors
     if isinstance(color, str):
         color = [color] * y.shape[1]
 
     # Create figure with specified size using OO interface
-    # Normalize figsize to a tuple of floats (matplotlib accepts floats or ints)
-    if figsize and len(figsize) >= 2:
-        figsize_vals = (float(figsize[0]), float(figsize[1]))
-    else:
-        figsize_vals = (6.0, 4.0)
-
-    fig, ax = plt.subplots(figsize=figsize_vals, dpi=dpi)
+    fig, ax = plt.subplots(figsize=(figsize[0], figsize[1]), dpi=dpi)
 
     # Create the appropriate plot type
     for i in range(y.shape[1]):
-        current_label = labels_list[i] if i < len(labels_list) else f"Series {i+1}"
+        current_label = labels[i] if i < len(labels) else f"Series {i+1}"
         current_color = color[i % len(color)]
 
         if plot_type == "line":
@@ -98,7 +90,7 @@ def plot_chart(
     if grid:
         ax.grid(True, linestyle="--", alpha=0.7)
 
-    if legend and any(labels_list):
+    if legend and any(labels):
         ax.legend()
 
     # Save the plot to a buffer and close the figure
