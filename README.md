@@ -3,6 +3,8 @@
 # Fermat MCP
 [![smithery badge](https://smithery.ai/badge/@abhiphile/fermat-mcp)](https://smithery.ai/server/@abhiphile/fermat-mcp)
 
+[![Verified on MseeP](https://mseep.ai/badge.svg)](https://mseep.ai/app/16469d0f-0c4a-4b35-babf-4666107251f5)
+
 This project provides a FastMCP server for mathematical computations, including numerical and symbolic calculations, as well as plotting.
 
 ## Modules
