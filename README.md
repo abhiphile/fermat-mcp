@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/abhiphile-fermat-mcp-badge.png)](https://mseep.ai/app/abhiphile-fermat-mcp)
+
 # Fermat MCP
 [![smithery badge](https://smithery.ai/badge/@abhiphile/fermat-mcp)](https://smithery.ai/server/@abhiphile/fermat-mcp)
 
