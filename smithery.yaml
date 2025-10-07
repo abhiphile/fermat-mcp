@@ -1,14 +1,16 @@
-# Smithery configuration file: https://smithery.ai/docs/build/project-config
+runtime: "container"
+build:
+  dockerfile: "Dockerfile"
+  dockerBuildPath: "."
 
 startCommand:
-  type: stdio
-  commandFunction:
-    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
-    |-
-    (config) => ({command: 'bash', args: ['setup.sh']})
+  type: "http"
   configSchema:
-    # JSON Schema defining the configuration options for the MCP.
     type: object
-    properties: {}
-    description: No configuration needed for Fermat MCP server
-  exampleConfig: {}
+    properties:
+      apiKey:
+        type: string
+        description: "API key for external service"
+    required: ["apiKey"]
+  exampleConfig:
+    apiKey: "your-api-key-here"

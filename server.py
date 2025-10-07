@@ -30,10 +30,23 @@ async def setup():
 
 
 def main():
+    # Mount and set up all sub-servers first
     asyncio.run(setup())
-    # If running inside a smithery deployment, prefer HTTP transport
+
+    # If running inside a Smithery deployment, run the full app over HTTP
     if os.environ.get("SMITHERY_DEPLOYMENT"):
-        app.run(transport="http")
+        # In containerized Smithery deployments the platform provides a PORT
+        # environment variable (defaults to 8081). Bind to 0.0.0.0 so the
+        # container is reachable from outside.
+        port = int(os.environ.get("PORT", "8081"))
+        host = os.environ.get("HOST", "0.0.0.0")
+        try:
+            app.run(transport="http", host=host, port=port)
+        except TypeError:
+            # Fallback if FastMCP.run doesn't accept host/port kwargs
+            # (older versions). In that case we rely on the default HTTP
+            # binding behavior of FastMCP and assume it reads PORT itself.
+            app.run(transport="http")
     else:
         app.run(transport="stdio")
 
