@@ -6,8 +6,8 @@ from fastmcp.utilities.types import Image
 
 
 def plot_scatter(
-    x_data: List[float],
-    y_data: List[float],
+    x_data: List[Union[float, int]],
+    y_data: List[Union[float, int]],
     labels: Optional[Union[str, List[str]]] = None,
     title: str = "",
     xlabel: str = "",
@@ -20,7 +20,7 @@ def plot_scatter(
     linewidths: float = 1.0,
     save: bool = False,
     dpi: int = 200,
-    figsize: Optional[List[int]] = None,
+    figsize: Optional[List[Union[int, float]]] = None,
     grid: bool = True,
     legend: bool = False,
 ) -> Image:
@@ -63,30 +63,41 @@ def plot_scatter(
         x = np.tile(x, (y.shape[1], 1)).T.flatten()
         y = y.T.reshape(-1, y.shape[0]).T
 
-    # Handle labels
+    # Handle labels — normalize to a list
     if labels is None:
-        labels = [""] * y.shape[1]
+        labels_list: List[str] = [""] * y.shape[1]
     elif isinstance(labels, str):
-        labels = [labels]
+        labels_list = [labels]
+    else:
+        labels_list = list(labels)
 
-    # Handle colors
+    # Handle colors — normalize to a list
     if isinstance(color, str):
-        color = [color] * y.shape[1]
+        colors_list = [color] * y.shape[1]
+    else:
+        colors_list = list(color)
 
-    # Handle sizes
+    # Handle sizes — normalize to list of floats
     if isinstance(size, (int, float)):
-        size = [size] * y.shape[1]
+        sizes_list = [float(size)] * y.shape[1]
+    elif isinstance(size, (list, tuple, np.ndarray)):
+        sizes_list = [float(s) for s in list(size)]
+    else:
+        sizes_list = [36.0] * y.shape[1]
 
-    # Create figure with specified size
-    fig, ax = plt.subplots(figsize=(figsize[0], figsize[1]), dpi=dpi)
+    # Normalize figsize and create figure
+    if figsize and len(figsize) >= 2:
+        figsize_vals = (float(figsize[0]), float(figsize[1]))
+    else:
+        figsize_vals = (6.0, 4.0)
+
+    fig, ax = plt.subplots(figsize=figsize_vals, dpi=dpi)
 
     # Create the scatter plot for each series
     for i in range(y.shape[1]):
-        current_label = labels[i] if i < len(labels) else f"Series {i+1}"
-        current_color = color[i % len(color)]
-        current_size = (
-            size[i % len(size)] if isinstance(size, (list, np.ndarray)) else size
-        )
+        current_label = labels_list[i] if i < len(labels_list) else f"Series {i+1}"
+        current_color = colors_list[i % len(colors_list)]
+        current_size = sizes_list[i % len(sizes_list)]
 
         ax.scatter(
             x,
@@ -108,7 +119,7 @@ def plot_scatter(
     if grid:
         ax.grid(True)
 
-    if legend and any(labels):
+    if legend and any(labels_list):
         ax.legend()
 
     # Save to buffer and return

@@ -8,7 +8,6 @@ dependencies = [
     "fastmcp>=2.10.5",
     "matplotlib>=3.10.3",
     "numpy>=2.3.1",
-    "pre-commit>=4.2.0",
     "pytest>=8.4.1",
     "pytest-asyncio>=1.1.0",
     "ruff>=0.12.4",
@@ -22,21 +21,3 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools]
 packages = ["fmcp"]
 
-# 🧼 Ruff (linter)
-[tool.ruff]
-lint.select = ["E", "F"]
-lint.ignore = ["E501", "F403", "F405", "E902"]
-lint.fixable = ["ALL"]
-lint.unfixable = []
-exclude = [
-    ".bzr", ".direnv", ".eggs", ".git", ".git-rewrite", ".hg",
-    ".mypy_cache", ".nox", ".pants.d", ".pytype", ".ruff_cache", ".svn",
-    ".tox", ".venv", "__pypackages__", "_build", "buck-out", "build",
-    "dist", "node_modules", "venv"
-]
-
-# 🧱 Black (formatter)
-[tool.black]
-line-length = 88
-target-version = ['py312']
-include = '\.pyi?$'
