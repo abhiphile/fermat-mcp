@@ -64,8 +64,10 @@ def plot_stack(
         colors = [default_colors[i % len(default_colors)] for i in range(y.shape[0])]
     elif isinstance(colors, str):
         colors = [colors] * y.shape[0]
-    else:
+    elif isinstance(colors, list):
         colors = list(colors)
+    else:
+        colors = [str(colors)] * y.shape[0]
 
     # Create figure with specified size using OO interface
     # Normalize figsize
