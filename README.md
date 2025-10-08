@@ -74,6 +74,26 @@ Add the following to your `mcp.json`:
 }
 ```
 
+### Claude (Anthropic)
+
+If you're using Claude or the Anthropic MCP client, add this working MCP configuration to your `mcp.json` (update the directory path to your local clone):
+
+```json
+{
+  "mcpServers": {
+    "fmcp": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/home/ty/Repositories/fermat-mcp",
+        "run",
+        "server.py"
+      ]
+    }
+  }
+}
+```
+
 ### Gemini CLI
 - Open your Gemini settings JSON located in ~/.gemini/settings.json where ~ is your home directory.
 
