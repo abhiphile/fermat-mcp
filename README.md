@@ -3,6 +3,10 @@
 
 This project provides a FastMCP server for mathematical computations, including numerical and symbolic calculations, as well as plotting.
 
+<a href="https://glama.ai/mcp/servers/@abhiphile/fermat-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@abhiphile/fermat-mcp/badge" alt="Fermat MCP server" />
+</a>
+
 ## Modules
 
 ### 1. mpl_mcp - Matplotlib Integration
@@ -151,4 +155,3 @@ npx -y @smithery/cli install @abhiphile/fermat-mcp --client gemini
 Here the task was to plot both x**2 and sin(x) in the same plot.
 ![GUI Demo 1-2](public/images/gui-demo-1.png)
 ![GUI Demo 2-2](public/images/gui-demo-2.png)
-
