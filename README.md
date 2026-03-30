@@ -185,3 +185,7 @@ Here the task was to plot both x**2 and sin(x) in the same plot.
 
 
 
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/abhiphile-fermat-mcp).
+
